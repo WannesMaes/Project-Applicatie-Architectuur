@@ -118,35 +118,40 @@ public class Boon implements BoonLocal {
         BigInteger start = new BigInteger(startuur);
         BigInteger eind = new BigInteger(einduur);
 
-        //zoek hoogste rnr voor nieuwe aan te maken
+        //zoek hoogste rnr voor nieuwe aan te maken en toevoegen
         BigDecimal rnrmax  = (BigDecimal)(em.createQuery("SELECT max(rr.rnr) FROM Reservatie rr").getSingleResult());
+        int nieuwRnr = rnrmax.intValue();
+        nieuwRnr += 1;
+        BigDecimal RnrFormaat = new BigDecimal(nieuwRnr);
+        r.setRnr(RnrFormaat);
+        System.out.println("***************************************************************");
+        System.out.println(RnrFormaat);
+        System.out.println("***************************************************************");
+        
+        //Serienr opzoeken en toevoegen
+        Machine m = em.find(Machine.class,snr);
+        r.setSerienr(m);
+        System.out.println("***************************************************************");
+        System.out.println(m);
+        System.out.println("***************************************************************");
         
         //Datum toevoegen aan tabel
-        /*
-        System.out.println("***************************************************************");
-        System.out.println(datum);
-        System.out.println("***************************************************************");
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        
         try 
         {
             //Date d = df.parse(datum);
-            //r.setDatum((new SimpleDateFormat("dd/MM/yyyy")).parse(datum));
-            //System.out.println("***************************************************************");
-            //System.out.println(df.format(d));
-            //System.out.println("***************************************************************");
+            r.setDatum((new SimpleDateFormat("dd/MM/yyyy")).parse(datum));
+            System.out.println("***************************************************************");
+            System.out.println((new SimpleDateFormat("dd/MM/yyyy")).parse(datum));
+            System.out.println("***************************************************************");
         } 
         catch (ParseException ex) 
         {
             Logger.getLogger(Boon.class.getName()).log(Level.SEVERE, null, ex);
         }
-       */
-
+       
+        //Start en einduur toevoegen
         r.setStartuur(start);
         r.setEinduur(eind);
-
-        Machine m = em.find(Machine.class,snr);
-        r.setSerienr(m);
 
         //een nieuw reservatie moment heeft geen huurder en is beschikbaar
         r.setBeschikbaar("j");
@@ -154,8 +159,11 @@ public class Boon implements BoonLocal {
         r.setHuurder(null);
 
         em.persist(r);//toevoegen bij objecten->tabellen
-       
-       
    }
-
+   public String GetOpleiding(String snrStr)
+   {
+       BigDecimal snr = new BigDecimal(snrStr);
+       Machine m = em.find(Machine.class,snr);
+       return m.getOpleiding().getNaam();
+   }
 }

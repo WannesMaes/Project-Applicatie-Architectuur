@@ -37,15 +37,17 @@
                     </c:if>
                 </tr>
             </c:forEach>
-                
         </table>
-        <p>
-            U heeft ook de mogelijkheid om een nieuw reservatie moment voor de machine toe te voegen.
-        </p>
-        <form  method="post" action="<c:url value='/URLServletC' />">
-            <input type="hidden" name="waarKomIkVan" value="vanDocentReservatieNaarReservatieToevoegen">
-            <input type="submit" value="Reservatie moment toevoegen">
-        </form>
+        <c:if test ="${applicationScope.opl == applicationScope.dop}">
+            <p>
+                U heeft ook de mogelijkheid om een nieuw reservatie moment voor de machine toe te voegen.
+            </p>
+            <form  method="post" action="<c:url value='/URLServletC' />">
+                <input type="hidden" name="waarKomIkVan" value="vanDocentReservatieNaarReservatieToevoegen">
+                <input type="submit" value="Reservatie moment toevoegen">
+            </form>    
+        </c:if>
+        
         <jsp:include page="footer.jsp" />
     </body>
 </html>

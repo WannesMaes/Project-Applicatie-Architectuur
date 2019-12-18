@@ -63,7 +63,6 @@ public class ServletC extends HttpServlet {
             view.forward(request,response);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -110,10 +109,14 @@ public class ServletC extends HttpServlet {
                     break;
             case "vanDocentOverzichtNaarDocentReservatie":
                     serieNrStr = request.getParameter("serienr");
+                    String opleidingR = boon.GetOpleiding(serieNrStr);
+                    getServletContext().setAttribute("opl",opleidingR);
                     serienr = Integer.parseInt(serieNrStr);
                     getServletContext().setAttribute("sr",serienr);
                     larm = boon.getAlleReservatiesVanMachine( serieNrStr);
                     getServletContext().setAttribute("larm",larm);
+                    String opleiding2 = boon.getDocentOpleiding( usr);
+                    getServletContext().setAttribute("dop",opleiding2);
                     view = request.getRequestDispatcher("docentreservatie.jsp");
                     break;
             case "vanDocentReservatieNaarReservatieToevoegen":
@@ -127,7 +130,7 @@ public class ServletC extends HttpServlet {
                     boon.reservatieMomentToevoegen( rdatum, rstart,  reind,  sr);
                     larm = boon.getAlleReservatiesVanMachine( sr);// update reservatie lijst van machine
                     getServletContext().setAttribute("larm",larm);
-                    view = request.getRequestDispatcher("reservatietoevoegen.jsp");
+                    view = request.getRequestDispatcher("docentreservatie.jsp");
                     break;
             case "vanDocentOverzichtNaarMachineToevoegen":
                     view = request.getRequestDispatcher("machinetoevoegen.jsp");

@@ -26,4 +26,5 @@ public interface BoonLocal {
    public void reserveerMachine(String rnrStr, String naam );
    public List getAlleReservaties();
    public void reservatieMomentToevoegen(String datum, String startuur, String einduur, String mserienr);
+   public String GetOpleiding(String snrStr);
 }
