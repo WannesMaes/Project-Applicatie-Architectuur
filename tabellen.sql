@@ -2,8 +2,6 @@
 	Tabellen voor het project van Applicatie architecturen
 	Wannes Maes en Leen Gadisseur
  */
-
-
 drop table reservatie purge;
 drop table extern purge;
 drop table studenten purge;
