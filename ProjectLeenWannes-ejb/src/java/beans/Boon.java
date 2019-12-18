@@ -113,36 +113,47 @@ public class Boon implements BoonLocal {
    }
    
    public void reservatieMomentToevoegen(String datum, String startuur, String einduur, String mserienr){
-       Reservatie r = new Reservatie();
-       BigDecimal snr = new BigDecimal(mserienr);
-       BigInteger start = new BigInteger(startuur);
-       BigInteger eind = new BigInteger(einduur);
-       
-       //zoek hoogste rnr voor nieuwe aan te maken
-       BigDecimal rnrmax  = (BigDecimal) em.createQuery("SELECT max(rr.rnr) FROM Reservatie rr").getSingleResult();
-       
-       SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-       Date d = null;
-        try {
-            d = df.parse(datum);
-            r.setDatum(d);
-        } catch (ParseException ex) {
+        Reservatie r = new Reservatie();
+        BigDecimal snr = new BigDecimal(mserienr);
+        BigInteger start = new BigInteger(startuur);
+        BigInteger eind = new BigInteger(einduur);
+
+        //zoek hoogste rnr voor nieuwe aan te maken
+        BigDecimal rnrmax  = (BigDecimal)(em.createQuery("SELECT max(rr.rnr) FROM Reservatie rr").getSingleResult());
+        
+        //Datum toevoegen aan tabel
+        /*
+        System.out.println("***************************************************************");
+        System.out.println(datum);
+        System.out.println("***************************************************************");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        
+        try 
+        {
+            //Date d = df.parse(datum);
+            //r.setDatum((new SimpleDateFormat("dd/MM/yyyy")).parse(datum));
+            //System.out.println("***************************************************************");
+            //System.out.println(df.format(d));
+            //System.out.println("***************************************************************");
+        } 
+        catch (ParseException ex) 
+        {
             Logger.getLogger(Boon.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
- 
-       r.setStartuur(start);
-       r.setEinduur(eind);
-       
-       Machine m = em.find(Machine.class,snr);
-       r.setSerienr(m);
-       
-       //een nieuw reservatie moment heeft geen huurder en is beschikbaar
-       r.setBeschikbaar("j");
-       //geen huurder
-       //r.setHuurder(null);
-     
-       em.persist(r);//toevoegen bij objecten->tabellen
+       */
+
+        r.setStartuur(start);
+        r.setEinduur(eind);
+
+        Machine m = em.find(Machine.class,snr);
+        r.setSerienr(m);
+
+        //een nieuw reservatie moment heeft geen huurder en is beschikbaar
+        r.setBeschikbaar("j");
+        //geen huurder
+        r.setHuurder(null);
+
+        em.persist(r);//toevoegen bij objecten->tabellen
        
        
    }

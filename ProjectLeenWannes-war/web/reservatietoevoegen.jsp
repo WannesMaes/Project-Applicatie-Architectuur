@@ -25,7 +25,7 @@
                 <tr>
                     <td>Datum</td>
                     <td>
-                        <input type="date" name="rdatum" value="">
+                        <input type="text" name="rdatum" value="">
                     </td>
                 </tr>
                 <tr>
