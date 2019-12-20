@@ -8,6 +8,7 @@ package beans;
 import java.math.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -155,10 +156,10 @@ public class Boon implements BoonLocal {
    }
    public List getUurprijzen(List reservaties)
    {
-       List prijzen = null;
+       List<Integer> prijzen = new ArrayList<Integer>();
        for (int i=0;i<reservaties.size();i++)
        {
-           prijzen.add((int)(((Reservatie)(reservaties.get(i))).getSerienr().getSerienr().intValue()));
+           prijzen.add((int)(((Reservatie)(reservaties.get(i))).getSerienr().getUurprijs().intValue()));
        }
        return prijzen;
    }

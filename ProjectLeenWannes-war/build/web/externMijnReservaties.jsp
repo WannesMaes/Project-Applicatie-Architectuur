@@ -24,22 +24,24 @@
                     <th>Startuur</th>
                     <th>Einduur</th>
                     <th>Uurprijs</th>
+                    <th>Serienummer</th>
                     <th>Totale prijs</th>
                     <th>Annuleren</th>
                     
                 </tr>
-            <c:forEach var="mijnrev" items="${applicationScope.mrv}">
-                
+        <c:if test="${applicationScope.mrv.size() > 0}">
+            <c:forEach var="i" begin="0" end="${applicationScope.mrv.size()-1}">
                 <tr>
-                    <td>${mijnrev.datum}</td>
-                    <td>${mijnrev.startuur}</td>
-                    <td>${mijnrev.einduur}</td>
-                    <td>${mijnrev.getUurprijs(mijnrev.rnr)}</td>
-                    <td>${((mijnrev.einduur-mijnrev.startuur)*applicationScope.upr)}</td>
+                    <td>${applicationScope.mrv.get(i).datum}</td>
+                    <td>${applicationScope.mrv.get(i).startuur}</td>
+                    <td>${applicationScope.mrv.get(i).einduur}</td>
+                    <td>${applicationScope.lpr.get(i)}</td>
+                    <td>${applicationScope.mrv.get(i).serienr.getSerienr()}</td>
+                    <td>${((applicationScope.mrv.get(i).einduur-applicationScope.mrv.get(i).startuur)*applicationScope.lpr.get(i))}</td>
                     <td>
                         <form  method="post" action="<c:url value='/URLServletC' />">
-                            <input type="hidden" name="serienr" value="${mijnrev.serienr}">
-                            <input type="hidden" name="resnr" value="${mijnrev.rnr}">
+                            <input type="hidden" name="serienr" value="${applicationScope.mrv.get(i).serienr}">
+                            <input type="hidden" name="resnr" value="${applicationScope.mrv.get(i).rnr}">
                             <input type="hidden" name="waarKomIkVan" value="vanExternMijnReservatiesNaarExternMijnReservaties">
                             <input type="submit" value="Annuleer">
                         </form>
@@ -47,10 +49,10 @@
                    
                 </tr>
             </c:forEach>
+        </c:if>
+            
         </table>
-        <c:forEach var="i" begin="0" end="${applicationScope.mrv.size()}">
-            Item <c:out value = "${i}"/>
-        </c:forEach>
+        
         <jsp:include page="footer.jsp" />
     </body>
 </html>

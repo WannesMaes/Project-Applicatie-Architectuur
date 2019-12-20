@@ -95,7 +95,7 @@ public class ServletC extends HttpServlet {
         String mnaam,mbeschrijf,mlokaal, mopleiding,maankoop, mhuur, msnr;
         String usr = (String)getServletContext().getAttribute("user");
         Machine mach;
-        List lm, lrv,larm,mrv;
+        List lm, lrv,larm,mrv,prijzen;
         String rnrStr;
         
         switch(request.getParameter("waarKomIkVan")){
@@ -222,8 +222,8 @@ public class ServletC extends HttpServlet {
                 getServletContext().setAttribute("rpr",huurprijs);
                 uurprijs = boon.getUurprijs(rnrStr);
                 getServletContext().setAttribute("upr",uurprijs);
-                //List prijzen = boon.getUurprijzen(mrv);
-                //getServletContext().setAttribute("lpr",prijzen);
+                prijzen = boon.getUurprijzen(mrv);
+                getServletContext().setAttribute("lpr",prijzen);
                 
                 view = request.getRequestDispatcher("externMijnReservaties.jsp");
                 break;
@@ -237,6 +237,8 @@ public class ServletC extends HttpServlet {
                 getServletContext().setAttribute("rpr",huurprijs);
                 uurprijs = boon.getUurprijs(rnrStr);
                 getServletContext().setAttribute("upr",uurprijs);
+                prijzen = boon.getUurprijzen(mrv);
+                getServletContext().setAttribute("lpr",prijzen);
                 view = request.getRequestDispatcher("externMijnReservaties.jsp");
                 break;
             default : view = request.getRequestDispatcher("index.jsp");
