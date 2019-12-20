@@ -8,6 +8,7 @@ package ctrl;
 import beans.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -89,12 +90,12 @@ public class ServletC extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher view = null;
-        String serieNrStr;
-        int serienr,rnr;
+        String serieNrStr,uurprijsStr;
+        int serienr,rnr,uurprijs,huurprijs;
         String mnaam,mbeschrijf,mlokaal, mopleiding,maankoop, mhuur, msnr;
         String usr = (String)getServletContext().getAttribute("user");
         Machine mach;
-        List lm, lrv,larm;
+        List lm, lrv,larm,mrv;
         String rnrStr;
         
         switch(request.getParameter("waarKomIkVan")){
@@ -171,28 +172,73 @@ public class ServletC extends HttpServlet {
                     break;
                 
            
-             //STUDENTEN  
-             case "vanStudentOverzichtNaarStudentDetail":
-                    serieNrStr = request.getParameter("serienr");
-                    serienr = Integer.parseInt(serieNrStr);
-                    getServletContext().setAttribute("sr",serienr);
-                    view = request.getRequestDispatcher("studentDetail.jsp");
-                    break;   
-                 
-              case "vanStudentOverzichtNaarStudentReservatie":
-                    serieNrStr = request.getParameter("serienr");
-                    serienr = Integer.parseInt(serieNrStr);
-                    getServletContext().setAttribute("sr",serienr);
-                    lrv = boon.getVrijeReservatiesVanMachine(serieNrStr);
-                    getServletContext().setAttribute("lrv",lrv);
-                    view = request.getRequestDispatcher("studentreservatie.jsp");
-                    break;   
-              case "vanStudentReservatieNaarStudentBevestiging":
-                    rnrStr = request.getParameter("resnr");
-                    usr = (String)getServletContext().getAttribute("user");
-                    boon.reserveerMachine(rnrStr, usr );
-                    view = request.getRequestDispatcher("student.jsp");
-                    break;   
+            //STUDENTEN  
+            case "vanStudentOverzichtNaarStudentDetail":
+                serieNrStr = request.getParameter("serienr");
+                serienr = Integer.parseInt(serieNrStr);
+                getServletContext().setAttribute("sr",serienr);
+                view = request.getRequestDispatcher("studentDetail.jsp");
+                break;   
+
+            case "vanStudentOverzichtNaarStudentReservatie":
+                serieNrStr = request.getParameter("serienr");
+                serienr = Integer.parseInt(serieNrStr);
+                getServletContext().setAttribute("sr",serienr);
+                lrv = boon.getVrijeReservatiesVanMachine(serieNrStr);
+                getServletContext().setAttribute("lrv",lrv);
+                view = request.getRequestDispatcher("studentreservatie.jsp");
+                break;   
+            case "vanStudentReservatieNaarStudentBevestiging":
+                rnrStr = request.getParameter("resnr");
+                usr = (String)getServletContext().getAttribute("user");
+                boon.reserveerMachine(rnrStr, usr );
+                view = request.getRequestDispatcher("student.jsp");
+                break;
+            //EXETERNEN
+            case "vanExternOverzichtNaarExternDetail":
+                serieNrStr = request.getParameter("serienr");
+                serienr = Integer.parseInt(serieNrStr);
+                getServletContext().setAttribute("sr",serienr);
+                view = request.getRequestDispatcher("externDetail.jsp");
+                break;   
+            case "vanExternOverzichtNaarExternReservatie":
+                serieNrStr = request.getParameter("serienr");
+                serienr = Integer.parseInt(serieNrStr);
+                getServletContext().setAttribute("sr",serienr);
+                uurprijsStr = request.getParameter("uprijs");
+                uurprijs = Integer.parseInt(uurprijsStr);
+                getServletContext().setAttribute("up",uurprijs);
+                lrv = boon.getVrijeReservatiesVanMachine(serieNrStr);
+                getServletContext().setAttribute("lrv",lrv);
+                view = request.getRequestDispatcher("externReservatie.jsp");
+                break;
+            case "vanExternReservatieNaarExternMijnReservaties":
+                rnrStr = request.getParameter("resnr");
+                usr = (String)getServletContext().getAttribute("user");
+                boon.reserveerMachine(rnrStr, usr );
+                mrv = boon.getMijnReservaties(usr);
+                getServletContext().setAttribute("mrv",mrv);
+                huurprijs = boon.getReservatiePrijs(rnrStr);
+                getServletContext().setAttribute("rpr",huurprijs);
+                uurprijs = boon.getUurprijs(rnrStr);
+                getServletContext().setAttribute("upr",uurprijs);
+                //List prijzen = boon.getUurprijzen(mrv);
+                //getServletContext().setAttribute("lpr",prijzen);
+                
+                view = request.getRequestDispatcher("externMijnReservaties.jsp");
+                break;
+            case "vanExternMijnReservatiesNaarExternMijnReservaties":
+                rnrStr = request.getParameter("resnr");
+                usr = (String)getServletContext().getAttribute("user");
+                boon.AnnuleerReservatie(rnrStr);
+                mrv = boon.getMijnReservaties(usr);
+                getServletContext().setAttribute("mrv",mrv);
+                huurprijs = boon.getReservatiePrijs(rnrStr);
+                getServletContext().setAttribute("rpr",huurprijs);
+                uurprijs = boon.getUurprijs(rnrStr);
+                getServletContext().setAttribute("upr",uurprijs);
+                view = request.getRequestDispatcher("externMijnReservaties.jsp");
+                break;
             default : view = request.getRequestDispatcher("index.jsp");
                     break;
         }

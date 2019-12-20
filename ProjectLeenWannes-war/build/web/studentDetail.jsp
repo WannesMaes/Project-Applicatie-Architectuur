@@ -24,7 +24,6 @@
                         <th>Lokaal</th>
                         <th>Opleiding</th>
                         <th>Serienummer</th>
-                        <th>Aankoopprijs</th>
                         <th>Uurprijs</th>
                     </tr>
             <c:forEach var="machines" items="${applicationScope.lm}">
@@ -35,7 +34,6 @@
                         <td>${machines.lokaal}</td>
                         <td>${machines.opleiding.getNaam()}</td>
                         <td>${machines.serienr}</td>
-                        <td>${machines.aankoopprijs}</td>
                         <td>${machines.uurprijs}</td>
                       
                         

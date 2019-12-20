@@ -40,8 +40,9 @@
                     <td>
                         <form  method="post" action="<c:url value='/URLServletC' />">
                             <input type="hidden" name="serienr" value="${machines.serienr}">
+                            <input type="hidden" name="uprijs" value="${machines.uurprijs}">
                             <input type="hidden" name="waarKomIkVan" value="vanExternOverzichtNaarExternReservatie">
-                            <input type="submit" value="Details">
+                            <input type="submit" value="Reservatie">
                         </form>
                     </td>
                 </tr>

@@ -1,8 +1,9 @@
 <%-- 
-    Document   : studentDetail
-    Created on : 5-dec-2019, 20:59:18
-    Author     : Leen
+    Document   : externDetail
+    Created on : 20-dec-2019, 9:59:50
+    Author     : Wannes
 --%>
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,7 +14,7 @@
     </head>
     <body>
         <jsp:include page="header.jsp" />
-        <h1>Welkom oh zo lieve student</h1>
+        <h1>Welkom oh zo dure externe</h1>
         <p>
             Een detailsoverzicht van de machine.
         </p>

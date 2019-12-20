@@ -100,6 +100,12 @@ public class Boon implements BoonLocal {
        List  res  =  em.createQuery("SELECT r FROM Reservatie r WHERE r.serienr = :mach ").setParameter("mach",m).getResultList();
        return res;
    }
+   public List getMijnReservaties(String usrStr)
+   {
+       BigDecimal usr = new BigDecimal(usrStr);
+       List res = em.createQuery("SELECT r FROM Reservatie r WHERE r.huurder.gebruikersnaam = :match").setParameter("match", usr).getResultList();
+       return res;
+   }
    
    public void reserveerMachine(String rnrStr, String naam ){
        BigDecimal rnr = new BigDecimal(rnrStr);
@@ -111,7 +117,51 @@ public class Boon implements BoonLocal {
        em.persist(r);
        
    }
-   
+   public void AnnuleerReservatie(String rnrStr)
+   {
+       BigDecimal rnr = new BigDecimal(rnrStr);
+       Reservatie r = em.find(Reservatie.class,rnr);
+       r.setHuurder(null);
+       r.setBeschikbaar("j");
+       em.persist(r);
+       
+   }
+   public int getReservatiePrijs(String rnrStr)
+   {
+        BigDecimal rnr = new BigDecimal(rnrStr);
+        int startuur=0;
+        int einduur=0;
+        int prijs=0;
+        List start = em.createNamedQuery("Reservatie.findByRnr").setParameter("rnr", rnr).getResultList();
+        if (!start.isEmpty())
+        {
+            startuur = ((BigInteger)(((Reservatie)(start.get(0))).getStartuur())).intValue();
+            einduur = ((BigInteger)(((Reservatie)(start.get(0))).getEinduur())).intValue();
+            prijs = ((BigInteger)(((Machine)(((Reservatie)(start.get(0))).getSerienr())).getUurprijs())).intValue();
+        }
+       int uren = einduur-startuur;
+       return uren*prijs;
+   }
+   public int getUurprijs(String rnrStr)
+   {
+        BigDecimal rnr = new BigDecimal(rnrStr);
+        int prijs=0;
+        List start = em.createNamedQuery("Reservatie.findByRnr").setParameter("rnr", rnr).getResultList();
+        if (!start.isEmpty())
+        {
+            prijs = ((BigInteger)(((Machine)(((Reservatie)(start.get(0))).getSerienr())).getUurprijs())).intValue();
+        }
+       return prijs;
+   }
+   public List getUurprijzen(List reservaties)
+   {
+       List prijzen = null;
+       for (int i=0;i<reservaties.size();i++)
+       {
+           prijzen.add((int)(((Reservatie)(reservaties.get(i))).getSerienr().getSerienr().intValue()));
+       }
+       return prijzen;
+   }
    public void reservatieMomentToevoegen(String datum, String startuur, String einduur, String mserienr){
         Reservatie r = new Reservatie();
         BigDecimal snr = new BigDecimal(mserienr);

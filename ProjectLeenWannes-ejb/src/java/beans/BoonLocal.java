@@ -27,4 +27,9 @@ public interface BoonLocal {
    public List getAlleReservaties();
    public void reservatieMomentToevoegen(String datum, String startuur, String einduur, String mserienr);
    public String GetOpleiding(String snrStr);
+   public List getMijnReservaties(String usrStr);
+   public void AnnuleerReservatie(String rnrStr);
+   public int getReservatiePrijs(String rnrStr);
+   public int getUurprijs(String rnrStr);
+   public List getUurprijzen(List reservaties);
 }
